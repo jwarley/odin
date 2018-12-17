@@ -68,12 +68,12 @@ def test(nnName, dataName, CUDA_DEVICE, epsilon, temperature):
                                          shuffle=False, num_workers=2)
 
     if nnName == "densenet10" or nnName == "wideresnet10": 
-	testset = torchvision.datasets.CIFAR10(root='../data', train=False, download=True, transform=transform)
-	testloaderIn = torch.utils.data.DataLoader(testset, batch_size=1,
+    	testset = torchvision.datasets.CIFAR10(root='../data', train=False, download=True, transform=transform)
+    	testloaderIn = torch.utils.data.DataLoader(testset, batch_size=1,
                                          shuffle=False, num_workers=2)
     if nnName == "densenet100" or nnName == "wideresnet100": 
-	testset = torchvision.datasets.CIFAR100(root='../data', train=False, download=True, transform=transform)
-	testloaderIn = torch.utils.data.DataLoader(testset, batch_size=1,
+    	testset = torchvision.datasets.CIFAR100(root='../data', train=False, download=True, transform=transform)
+    	testloaderIn = torch.utils.data.DataLoader(testset, batch_size=1,
                                          shuffle=False, num_workers=2)
     
     if dataName == "Gaussian":
@@ -84,8 +84,8 @@ def test(nnName, dataName, CUDA_DEVICE, epsilon, temperature):
         d.testUni(net1, criterion, CUDA_DEVICE, testloaderIn, testloaderIn, nnName, dataName, epsilon, temperature)
         m.metric(nnName, dataName)
     else:
-	d.testData(net1, criterion, CUDA_DEVICE, testloaderIn, testloaderOut, nnName, dataName, epsilon, temperature) 
-	m.metric(nnName, dataName)
+    	d.testData(net1, criterion, CUDA_DEVICE, testloaderIn, testloaderOut, nnName, dataName, epsilon, temperature) 
+    	m.metric(nnName, dataName)
 
 
 
