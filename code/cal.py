@@ -112,7 +112,7 @@ def val(nnName, dataName, CUDA_DEVICE, temperature):
 
     eps_fpr_pairs = {}
 
-    for epsilon in range(val_min, val_max, val_step):
+    for epsilon in np.arange(val_min, val_max, val_step):
         d.testData(net1, criterion, CUDA_DEVICE, testloaderIn, testloaderOut, nnName, dataName, epsilon, temperature)
         fpr = m.val_metric(nnName, dataName)
         eps_fpr_pairs[epsilon] = fpr

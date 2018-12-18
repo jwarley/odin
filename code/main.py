@@ -71,11 +71,6 @@ parser.set_defaults(argument=True)
 #dataName = "Imagenet"
 
 
-# Setting the perturbation magnitude
-#epsilon = 0.0014
-
-# Setting the temperature
-#temperature = 1000
 def main():
     global args
     args = parser.parse_args()
