@@ -95,7 +95,7 @@ def val(nnName, dataName, CUDA_DEVICE, temperature, val_min, val_max, val_num):
     net1.cuda(CUDA_DEVICE)
     
     testsetout = torchvision.datasets.ImageFolder("../data/{}".format(dataName), transform=transform)
-    rand_sampler = torch.utils.data.RandomSampler(testsetout)
+    rand_sampler = torch.utils.data.sampler.RandomSampler(testsetout)
     testloaderOut = torch.utils.data.DataLoader(testsetout, sampler=rand_sampler, batch_size=1,
                                      shuffle=False, num_workers=2)
 
