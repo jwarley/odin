@@ -45,6 +45,9 @@ parser.add_argument('--temperature', default=1000, type=int,
 parser.add_argument('--gpu', default = 0, type = int,
 		    help='gpu index')
 parser.add_argument('--val', default = 0, type = int, help='validation')
+parser.add_argument('--val_min', default = 0.0, type = float, help='min of validation range')
+parser.add_argument('--val_max', default = 0.004, type = float, help='max of validation range')
+parser.add_argument('--val_num', default = 20, type = int, help='number of validation rounds')
 parser.set_defaults(argument=True)
 
 
@@ -77,7 +80,7 @@ def main():
     if args.val == 0:
         c.test(args.nn, args.out_dataset, args.gpu, args.magnitude, args.temperature)
     elif args.val == 1:
-        c.val(args.nn, args.out_dataset, args.gpu, args.temperature)
+        c.val(args.nn, args.out_dataset, args.gpu, args.temperature, args.val_min, args.val_max, args.val_num)
 
 if __name__ == '__main__':
     main()

@@ -88,7 +88,7 @@ def test(nnName, dataName, CUDA_DEVICE, epsilon, temperature):
     	m.metric(nnName, dataName)
 
 
-def val(nnName, dataName, CUDA_DEVICE, temperature):
+def val(nnName, dataName, CUDA_DEVICE, temperature, val_min, val_max, val_num):
 
     net1 = torch.load("../models/{}.pth".format(nnName))
     optimizer1 = optim.SGD(net1.parameters(), lr = 0, momentum = 0)
@@ -106,13 +106,9 @@ def val(nnName, dataName, CUDA_DEVICE, temperature):
         testloaderIn = torch.utils.data.DataLoader(testset, batch_size=1, shuffle=False, num_workers=2)
 
     # validate epsilon by picking argmax of tpr95
-    val_min = 0.0
-    val_max = 0.005
-    val_step = 0.00025
-
     eps_fpr_pairs = {}
 
-    for epsilon in np.arange(val_min, val_max, val_step):
+    for epsilon in np.linspace(val_min, val_max, num=val_num):
         d.testData(net1, criterion, CUDA_DEVICE, testloaderIn, testloaderOut, nnName, dataName, epsilon, temperature)
         fpr = m.val_metric(nnName, dataName)
         eps_fpr_pairs[epsilon] = fpr
