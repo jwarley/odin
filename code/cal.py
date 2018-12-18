@@ -88,9 +88,42 @@ def test(nnName, dataName, CUDA_DEVICE, epsilon, temperature):
     	m.metric(nnName, dataName)
 
 
+def val(nnName, dataName, CUDA_DEVICE, temperature):
 
+    net1 = torch.load("../models/{}.pth".format(nnName))
+    optimizer1 = optim.SGD(net1.parameters(), lr = 0, momentum = 0)
+    net1.cuda(CUDA_DEVICE)
+    
+    testsetout = torchvision.datasets.ImageFolder("../data/{}".format(dataName), transform=transform)
+    testloaderOut = torch.utils.data.DataLoader(testsetout, batch_size=1,
+                                     shuffle=False, num_workers=2)
 
+    if nnName == "densenet10": 
+        testset = torchvision.datasets.CIFAR10(root='../data', train=False, download=True, transform=transform)
+        testloaderIn = torch.utils.data.DataLoader(testset, batch_size=1, shuffle=False, num_workers=2)
+    if nnName == "densenet100": 
+        testset = torchvision.datasets.CIFAR100(root='../data', train=False, download=True, transform=transform)
+        testloaderIn = torch.utils.data.DataLoader(testset, batch_size=1, shuffle=False, num_workers=2)
 
+    # validate epsilon by picking argmax of tpr95
+    val_min = 0.0
+    val_max = 0.005
+    val_step = 0.00025
 
+    eps_fpr_pairs = {}
+
+    for epsilon in range(val_min, val_max, val_step):
+        d.testData(net1, criterion, CUDA_DEVICE, testloaderIn, testloaderOut, nnName, dataName, epsilon, temperature)
+        fpr = m.val_metric(nnName, dataName)
+        eps_fpr_pairs[epsilon] = fpr
+
+    best_pair = None
+    for (eps, fpr) in eps_fpr_pairs.items():
+        if best_pair == None or best_pair[1] < fpr:
+            best_pair = (eps, fpr)
+
+    print("Finished validation")
+    print("Best epsilon found:", best_pair[0], "at fpr", best_pair[1])
+    print("All eps/fpr pairs tested:", eps_fpr_pairs)
 
 

@@ -323,8 +323,36 @@ def metric(nn, data):
     print("{:20}{:13.1f}%{:>18.1f}%".format("AUPR Out:",auproutBase*100, auproutNew*100))
 
 
+# same as above but it returns fpr for validation
+def val_metric(nn, data):
+    if nn == "densenet10" or nn == "wideresnet10": indis = "CIFAR-10"
+    if nn == "densenet100" or nn == "wideresnet100": indis = "CIFAR-100"
+    if nn == "densenet10" or nn == "densenet100": nnStructure = "DenseNet-BC-100"
+    if nn == "wideresnet10" or nn == "wideresnet100": nnStructure = "Wide-ResNet-28-10"
 
-
+    if data == "Imagenet": dataName = "Tiny-ImageNet (crop)"
+    if data == "Imagenet_resize": dataName = "Tiny-ImageNet (resize)"
+    if data == "LSUN": dataName = "LSUN (crop)"
+    if data == "LSUN_resize": dataName = "LSUN (resize)"
+    if data == "iSUN": dataName = "iSUN"
+    if data == "Gaussian": dataName = "Gaussian noise"
+    if data == "Uniform": dataName = "Uniform Noise"
+    fprBase, fprNew = tpr95(indis)
+    errorBase, errorNew = detection(indis)
+    aurocBase, aurocNew = auroc(indis)
+    auprinBase, auprinNew = auprIn(indis)
+    auproutBase, auproutNew = auprOut(indis)
+    print("{:31}{:>22}".format("Neural network architecture:", nnStructure))
+    print("{:31}{:>22}".format("In-distribution dataset:", indis))
+    print("{:31}{:>22}".format("Out-of-distribution dataset:", dataName))
+    print("")
+    print("{:>34}{:>19}".format("Baseline", "Our Method"))
+    print("{:20}{:13.1f}%{:>18.1f}% ".format("FPR at TPR 95%:",fprBase*100, fprNew*100))
+    print("{:20}{:13.1f}%{:>18.1f}%".format("Detection error:",errorBase*100, errorNew*100))
+    print("{:20}{:13.1f}%{:>18.1f}%".format("AUROC:",aurocBase*100, aurocNew*100))
+    print("{:20}{:13.1f}%{:>18.1f}%".format("AUPR In:",auprinBase*100, auprinNew*100))
+    print("{:20}{:13.1f}%{:>18.1f}%".format("AUPR Out:",auproutBase*100, auproutNew*100))
+    return fprNew
 
 
 
