@@ -51,7 +51,10 @@ def tpr95(name):
         if tpr <= 0.9505 and tpr >= 0.9495:
             fpr += error2
             total += 1
-    fprBase = fpr/total
+    if total == 0:
+        fprBase = 100
+    else:
+        fprBase = fpr/total
 
     # calculate our algorithm
     T = 1000
@@ -75,7 +78,10 @@ def tpr95(name):
         if tpr <= 0.9505 and tpr >= 0.9495:
             fpr += error2
             total += 1
-    fprNew = fpr/total
+    if total == 0:
+        fprNew = 100
+    else:
+        fprNew = fpr/total
             
     return fprBase, fprNew
 

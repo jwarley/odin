@@ -109,6 +109,7 @@ def val(nnName, dataName, CUDA_DEVICE, temperature, val_min, val_max, val_num):
     # validate epsilon by picking argmax of tpr95
     eps_fpr_pairs = {}
 
+    print("Validating with", val_num, "parameter samples in range", val_min, "to", val_max)
     for epsilon in np.linspace(val_min, val_max, num=val_num):
         d.testData(net1, criterion, CUDA_DEVICE, testloaderIn, testloaderOut, nnName, dataName, epsilon, temperature)
         fpr = m.val_metric(nnName, dataName)
@@ -116,7 +117,7 @@ def val(nnName, dataName, CUDA_DEVICE, temperature, val_min, val_max, val_num):
 
     best_pair = None
     for (eps, fpr) in eps_fpr_pairs.items():
-        if best_pair == None or best_pair[1] < fpr:
+        if best_pair == None or fpr < best_pair[1]:
             best_pair = (eps, fpr)
 
     print("Finished validation")
