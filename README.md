@@ -1,3 +1,8 @@
+# Modified ODIN
+This is source code for a modified version of the ODIN out-of-distribution image detector by Liang et al.
+This code was produced as part of the final project for CS682 at UMass Amherst.
+The readme for the original ODIN project is reproduced below.
+
 # ODIN: Out-of-Distribution Detector for Neural Networks
 
 
